@@ -1,3 +1,3 @@
 <template>
-  <div>Here where the fun begins!</div>
+  <div>Here's where the fun begins!</div>
 </template>
