@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\AuthRequest;
+use App\Http\Requests\Api\{AuthRequest, RegisterRequest};
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +42,18 @@ class AuthController extends Controller
     {
         return response()->json([
             'user' => $request->user()
+        ]);
+    }
+
+
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create($request->all());
+
+        return response()->json([
+            'message' => 'User registered successfully',
+            'token' => $user->createToken('authToken')->plainTextToken,
+            'user' => $user,
         ]);
     }
 }
