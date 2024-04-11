@@ -46,12 +46,8 @@ class User extends Authenticatable
         ];
     }
 
-    // public static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::creating(function ($model) {
-    //         $model->uuid = Str::uuid();
-    //     });
-    // }
+    public function expense()
+    {
+        return $this->hasMany(Expense::class);
+    }
 }

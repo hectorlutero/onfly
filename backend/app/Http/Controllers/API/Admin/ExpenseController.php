@@ -2,20 +2,35 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\DTO\StoreExpenseDTO;
+use App\DTO\UpdateExpenseDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
+use App\Models\User;
+use App\Policies\ExpensePolicy;
+use App\Services\ExpenseService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ExpenseController extends Controller
 {
+    public function __construct(
+        protected ExpenseService $service,
+        protected Expense $expense,
+        protected User $user,
+        protected ExpensePolicy $expensePolicy
+    ) {
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $expenses = Expense::all();
+
+        $expenses = $this->service->getAll();
+        // $expenses = $this->service->paginate();
         return response()->json([
             'message' => "All expenses",
             'expenses' => $expenses
@@ -27,9 +42,9 @@ class ExpenseController extends Controller
      */
     public function store(StoreExpenseRequest $request)
     {
-        $data = $request->all();
-        $data['date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date'])->format('Y-m-d');
-        $expense = Expense::create($data);
+
+        $expense = $this->service->create(StoreExpenseDTO::makeFromRequest($request));
+
         return response()->json([
             'message' => "New expense",
             'expense' => $expense
@@ -41,7 +56,11 @@ class ExpenseController extends Controller
      */
     public function show(string $id)
     {
-        $expense = Expense::findOrFail($id);
+        $expense = $this->service->getById($id);
+
+        if (!Gate::check('view', $expense))
+            return response()->json(['message' => "You are not authorized to view this expense"], 403);
+
         return response()->json([
             'message' => "Expense with id $id",
             'expense' => $expense
@@ -53,11 +72,10 @@ class ExpenseController extends Controller
      */
     public function update(UpdateExpenseRequest $request, string $id)
     {
-        $data = $request->all();
-        if (isset($data['date']))
-            $data['date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date'])->format('Y-m-d');
-        $expense = Expense::find($id);
-        $expense->update($data);
+        if (!Gate::check('update', $this->service->getById($id)))
+            return response()->json(['message' => "You are not authorized to update this expense"], 403);
+
+        $expense = $this->service->update($request->all(), $id);
         return response()->json([
             'message' => "Updated expense with id $id",
             'expense' => $expense
@@ -69,8 +87,16 @@ class ExpenseController extends Controller
      */
     public function destroy(string $id)
     {
-        $expense = Expense::findOrFail($id);
-        $expense->delete();
+        if (!Gate::check('update', $this->service->getById($id)))
+            return response()->json(['message' => "You are not authorized to delete this expense"], 403);
+
+
+        $expense = $this->service->delete($id);
+        if (!$expense)
+            return response()->json([
+                'message' => "Expense with id $id not found"
+            ]);
+
         return response()->json([
             'message' => "Deleted expense with id $id"
         ]);

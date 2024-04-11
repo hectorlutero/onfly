@@ -25,7 +25,6 @@ class StoreExpenseRequest extends FormRequest
             "description" => "required|string|min:3|max:255",
             "date" => "required|date_format:d/m/Y",
             "total_amount" => "required|numeric",
-            "user_id" => "required|exists:users,id",
         ];
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Expense extends Model
 {
+
     use HasFactory;
     protected $fillable = [
         'description',
@@ -14,4 +15,9 @@ class Expense extends Model
         'total_amount',
         'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
