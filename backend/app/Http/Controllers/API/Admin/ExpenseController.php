@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Policies\ExpensePolicy;
 use App\Services\ExpenseService;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class ExpenseController extends Controller
 {
@@ -54,7 +55,9 @@ class ExpenseController extends Controller
      */
     public function show(string $id)
     {
-        $expense = $this->service->getById($id);
+        Log::debug('Id is: ', [intval($id)]);
+        $expense = $this->service->getById(intval($id));
+        Log::debug([$expense]);
 
         if (is_null($expense))
             return response()->json(['message' => "Expense with id $id not found"], 404);

@@ -60,6 +60,6 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
             'token' => $user->createToken('authToken')->plainTextToken,
             'user' => $user,
-        ]);
+        ], 201);
     }
 }

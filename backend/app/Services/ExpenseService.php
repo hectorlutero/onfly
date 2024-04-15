@@ -8,22 +8,25 @@ use App\Mail\ExpenseStored;
 use App\Models\Expense;
 use App\Repositories\Contracts\ExpenseRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use stdClass;
 
 class ExpenseService
 {
-    public function __construct(
-        protected ExpenseRepositoryInterface $expenseRepository,
-    ) {
+    protected ExpenseRepositoryInterface $expenseRepository;
+    public function __construct(ExpenseRepositoryInterface $expenseRepository)
+    {
+        $this->expenseRepository = $expenseRepository;
     }
 
     public function paginate(int $page = 1, int $totalPerPage = 10, string $filter = null): array
     {
         return [];
     }
-    public function getAll(string $filter = null): array
+    public function getAll(?string $filter = null): array
     {
+        $filter = $filter ?? '';
         $expenses = $this->expenseRepository->getAll($filter);
         return $expenses;
     }
@@ -37,8 +40,12 @@ class ExpenseService
     public function create(StoreExpenseDTO $dto): Expense
     {
         $expense = $this->expenseRepository->create($dto);
-        Mail::to($expense->user->email)->send(new ExpenseStored($expense));
-        return (object) $expense;
+        if (!$expense)
+            Log::error('Expense is null.');
+
+        Mail::to(auth()->user()->email)->send(new ExpenseStored($expense));
+
+        return $expense; // Return the expense
     }
 
     public function update($data, int $id): Expense

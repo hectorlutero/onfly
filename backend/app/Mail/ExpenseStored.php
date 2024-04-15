@@ -29,7 +29,7 @@ class ExpenseStored extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Hey ' . $this->expense->user->name . ', you have a new Expense Stored!',
+            subject: 'Hey ' . auth()->user()->name . ', you have a new Expense Stored!',
         );
     }
 

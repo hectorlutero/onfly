@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\DTO\StoreExpenseDTO;
 use App\Models\Expense;
 use App\Repositories\Contracts\ExpenseRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 use stdClass;
 
 class ExpenseEloquentORM implements ExpenseRepositoryInterface
