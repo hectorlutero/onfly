@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\{AuthRequest, RegisterRequest};
+use App\Http\Requests\Api\{AuthRequest, RegisterRequest, UpdateProfileRequest};
 use App\Mail\UserRegistered;
 use App\Models\User;
 use App\Policies\UserPolicy;
@@ -81,5 +81,27 @@ class AuthController extends Controller
             'token' => $user->createToken('authToken')->plainTextToken,
             'user' => $user,
         ], 201);
+    }
+
+    public function updateProfile(UpdateProfileRequest $request, int $id)
+    {
+        $user = User::find($id);
+
+        if (!$user)
+            return response()->json([
+                'message' => "User not found."
+            ], 404);
+
+        if (isset($request->is_admin)) {
+            if (!Gate::check('update-user', $user))
+                return response()->json(['message' => "You are not authorized to change the user role, only admins"], 403);
+        }
+
+        $user->update($request->all());
+
+        return response()->json([
+            'message' => "User updated successfully.",
+            "user" => $user,
+        ]);
     }
 }

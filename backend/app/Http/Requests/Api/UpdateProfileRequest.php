@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,10 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
-            'email' => 'required|unique:users|max:255|email',
-            'password' => 'required|min:6|max:255'
+            'name' => 'min:3|max:255',
+            'email' => 'unique:users|max:255|email',
+            'is_admin' => 'integer',
+            'password' => 'min:6|max:255'
         ];
     }
 }

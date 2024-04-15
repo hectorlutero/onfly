@@ -37,6 +37,9 @@ class UserPolicy
      */
     public function updateUser(User $user, User $targetUser): bool
     {
+        // check if the user is not an admin user
+        if (auth()->user()->is_admin === 0)
+            return false;
         return $user->is_admin || $user->id === $targetUser->id;
     }
 
