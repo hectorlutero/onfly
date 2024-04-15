@@ -10,7 +10,7 @@
     <q-card-section>
       <q-input v-model="name" type="text" hint="User name" label="Full Name" />
       <q-input v-model="email" type="email" hint="User email" label="Email" />
-      <q-toggle v-model="isAdmin" label="Is Admin?" value="1" />
+      <q-toggle v-model="is_admin" label="Is Admin?" />
       <q-input
         v-model="userDate"
         type="date"
@@ -34,9 +34,9 @@ export default {
   },
   setup(props) {
     const id = ref(props.user.id);
-    const name = ref(props.user.title);
-    const email = ref(props.user.description);
-    const is_admin = ref(props.user.is_admin);
+    const name = ref(props.user.name);
+    const email = ref(props.user.email);
+    const is_admin = ref(props.user.is_admin ? true : false);
     const formattedDate = date.formatDate(
       date.extractDate(props.user.created_at, 'DD/MM/YYYY'),
       'YYYY-MM-DD'

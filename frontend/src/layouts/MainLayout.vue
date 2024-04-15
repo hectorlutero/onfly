@@ -67,9 +67,15 @@ defineOptions({
 });
 
 const token = localStorage.getItem('token');
-const user = JSON.parse(
-  localStorage.getItem('user')?.replace('__q_objt|', '') as string
-);
+let user = {
+  is_admin: 0,
+};
+if (localStorage.getItem('user')) {
+  user = JSON.parse(
+    localStorage.getItem('user')?.replace('__q_objt|', '') as string
+  );
+}
+
 const leftDrawerOpen = ref(false);
 
 function toggleLeftDrawer() {

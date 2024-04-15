@@ -17,14 +17,17 @@ export default ({ router }) => {
     } else {
       next();
     }
-
-    if (!to.meta?.isAdmin) {
-      Notify.create({
-        message: 'You must be an admin to access this page',
-        color: 'negative',
-        position: 'top',
-      });
-      next('/dashboard');
+    console.log(to.meta);
+    if (to.meta?.isAdmin === true) {
+      const user = LocalStorage.getItem('user');
+      if (!user.is_admin) {
+        Notify.create({
+          message: 'You must be an admin to access this page',
+          color: 'negative',
+          position: 'top',
+        });
+        window.location.href = '/dashboard'
+      }
     } else {
       next();
     }
