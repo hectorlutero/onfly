@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\DTO\StoreExpenseDTO;
 use App\DTO\UpdateExpenseDTO;
+use App\Mail\ExpenseStored;
 use App\Models\Expense;
 use App\Repositories\Contracts\ExpenseRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use stdClass;
 
 class ExpenseService
@@ -34,15 +36,13 @@ class ExpenseService
 
     public function create(StoreExpenseDTO $dto): Expense
     {
-        $dto->date = \Carbon\Carbon::createFromFormat('d/m/Y', $dto->date)->format('Y-m-d');
         $expense = $this->expenseRepository->create($dto);
+        Mail::to($expense->user->email)->send(new ExpenseStored($expense));
         return (object) $expense;
     }
 
     public function update($data, int $id): Expense
     {
-        if (isset($data->date))
-            $data->date = \Carbon\Carbon::createFromFormat('d/m/Y', $data->date)->format('Y-m-d');
         $expense = $this->expenseRepository->update($data, $id);
         return (object) $expense;
     }

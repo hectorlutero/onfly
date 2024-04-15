@@ -53,7 +53,7 @@ class ExpenseEloquentORM implements ExpenseRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $expense = $this->expense->find($id)->first();
+        $expense = $this->expense->where('id', $id)->first();
         if (!$expense)
             return false;
 

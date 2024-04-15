@@ -24,7 +24,7 @@ class StoreExpenseRequest extends FormRequest
         return [
             "title" => "required|string|min:3|max:255",
             "description" => "required|string|min:3|max:255",
-            "date" => "required|date_format:d/m/Y",
+            "date" => "required|date",
             "total_amount" => "required|numeric",
         ];
     }

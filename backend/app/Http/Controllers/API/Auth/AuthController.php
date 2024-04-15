@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\{AuthRequest, RegisterRequest};
+use App\Mail\UserRegistered;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -51,6 +53,8 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = User::create($request->all());
+
+        Mail::to($user->email)->send(new UserRegistered($user));
 
         return response()->json([
             'message' => 'User registered successfully',
