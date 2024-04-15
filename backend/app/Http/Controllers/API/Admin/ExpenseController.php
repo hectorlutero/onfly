@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\DTO\StoreExpenseDTO;
-use App\DTO\UpdateExpenseDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
@@ -11,7 +10,6 @@ use App\Models\Expense;
 use App\Models\User;
 use App\Policies\ExpensePolicy;
 use App\Services\ExpenseService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class ExpenseController extends Controller
@@ -57,6 +55,9 @@ class ExpenseController extends Controller
     public function show(string $id)
     {
         $expense = $this->service->getById($id);
+
+        if (is_null($expense))
+            return response()->json(['message' => "Expense with id $id not found"], 404);
 
         if (!Gate::check('view', $expense))
             return response()->json(['message' => "You are not authorized to view this expense"], 403);

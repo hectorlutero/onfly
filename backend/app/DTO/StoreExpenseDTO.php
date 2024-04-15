@@ -7,6 +7,7 @@ use App\Http\Requests\StoreExpenseRequest;
 class StoreExpenseDTO
 {
     public function __construct(
+        public string $title,
         public string $description,
         public string $date,
         public float $total_amount,
@@ -17,6 +18,7 @@ class StoreExpenseDTO
     public static function makeFromRequest(StoreExpenseRequest $request): self
     {
         return new self(
+            $request->title,
             $request->description,
             $request->date,
             $request->total_amount,

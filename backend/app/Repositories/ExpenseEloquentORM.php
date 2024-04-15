@@ -24,7 +24,9 @@ class ExpenseEloquentORM implements ExpenseRepositoryInterface
         $expenses = $this->expense->with('user')->where(function ($query) use ($filter) {
             if ($filter) {
                 $query->where('description', 'like', "%$filter%");
+                $query->orWhere('title', 'like', "%$filter%");
             }
+            $query->where('user_id', 'like', auth()->user()->id);
         })->get()->toArray();
 
         return $expenses;

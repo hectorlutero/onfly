@@ -29,7 +29,7 @@ class ExpenseService
     public function getById(int $id): Expense | null
     {
         $expense = $this->expenseRepository->getById($id);
-        return (object) $expense;
+        return $expense ? (object) $expense : null;
     }
 
     public function create(StoreExpenseDTO $dto): Expense

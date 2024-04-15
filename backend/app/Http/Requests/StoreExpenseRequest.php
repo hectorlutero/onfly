@@ -22,6 +22,7 @@ class StoreExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "title" => "required|string|min:3|max:255",
             "description" => "required|string|min:3|max:255",
             "date" => "required|date_format:d/m/Y",
             "total_amount" => "required|numeric",
