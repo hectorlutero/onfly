@@ -27,6 +27,21 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/users',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        name: 'users',
+        path: '',
+        component: () => import('pages/Admin/UsersTablePage.vue'),
+      },
+    ],
+    meta: {
+      requiresAuth: true,
+      isAdmin: true,
+    },
+  },
+  {
     path: '/login',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/LoginPage.vue') }],
