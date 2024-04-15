@@ -62,8 +62,8 @@ import { api } from 'src/boot/axios';
 export default {
   data() {
     return {
-      name: 'Christian',
-      email: 'christian@email.com',
+      name: 'Hector Siman',
+      email: 'hectorsimandev@gmail.com',
       password: 'password',
     };
   },
@@ -77,7 +77,7 @@ export default {
           password: password,
         })
         .then((response) => {
-          if (response.status === 200) {
+          if (response.status === 201) {
             Notify.create({
               message: 'You have successfully registered!',
               color: 'positive',
@@ -85,7 +85,7 @@ export default {
               position: 'top',
             });
             LocalStorage.set('token', response.data.token);
-            window.location.href = '/';
+            window.location.href = '/dashboard';
           }
         })
         .catch((error) => {

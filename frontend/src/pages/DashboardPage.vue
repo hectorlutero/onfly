@@ -1,5 +1,7 @@
 <template>
-  <q-page class="container mx-auto"> <expenses-table /> </q-page>
+  <q-page class="container mx-auto">
+    <expenses-table />
+  </q-page>
 </template>
 
 <script>

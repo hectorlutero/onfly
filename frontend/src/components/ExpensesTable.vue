@@ -203,7 +203,7 @@ export default {
               title: 'Expense Deleted',
               message: 'The expense #' + id + ' was deleted.',
               persistent: true,
-            }).onOk(() => console.log(`${id} deleted`));
+            }).onOk(() => window.location.reload());
           });
         });
       }
