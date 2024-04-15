@@ -6,12 +6,32 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\{AuthRequest, RegisterRequest};
 use App\Mail\UserRegistered;
 use App\Models\User;
+use App\Policies\UserPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        protected User $user,
+        protected UserPolicy $userPolicy
+    ) {
+    }
+    public function index(Request $request)
+    {
+        if (!Gate::check('view-any-user', auth()->user()))
+            return response()->json(['message' => "You are not authorized to update this expense"], 403);
+
+
+        $users = User::all()->toArray();
+        return response()->json([
+            'message' => 'All users',
+            'users' => $users
+        ]);
+    }
+
     public function login(AuthRequest $request)
     {
 
