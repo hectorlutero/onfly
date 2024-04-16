@@ -62,9 +62,9 @@ import { api } from 'src/boot/axios';
 export default {
   data() {
     return {
-      name: 'Hector Siman',
-      email: 'hectorsimandev@gmail.com',
-      password: 'password',
+      name: '',
+      email: '',
+      password: '',
     };
   },
   methods: {

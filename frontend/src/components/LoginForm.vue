@@ -48,8 +48,8 @@ import { api } from 'src/boot/axios';
 export default {
   data() {
     return {
-      email: 'hectorsimandev@gmail.com',
-      password: 'password',
+      email: '',
+      password: '',
     };
   },
   setup() {

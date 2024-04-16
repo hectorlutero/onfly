@@ -144,7 +144,7 @@ export default {
               textColor: 'white',
               position: 'top',
               timeout: 4000,
-            }).call(() => window.location.reload());
+            });
           }
         } catch (error) {
           if (error.response?.status === 500) {
