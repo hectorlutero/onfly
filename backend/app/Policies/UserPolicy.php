@@ -58,22 +58,6 @@ class UserPolicy
      */
     public function deleteUser(User $user, User $targetUser): bool
     {
-        return $user->is_admin || $user->id === $targetUser->id;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restoreUser(User $user, User $targetUser): bool
-    {
-        return $user->is_admin || $user->id === $targetUser->id;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDeleteUser(User $user, User $targetUser): bool
-    {
-        return $user->is_admin || $user->id === $targetUser->id;
+        return auth()->user()->is_admin === 1 || $user->id === $targetUser->id;
     }
 }

@@ -123,4 +123,18 @@ class AuthController extends Controller
             "user" => $user,
         ]);
     }
+
+    public function deleteUser(string $id)
+    {
+        $user = User::find($id);
+
+        if (!Gate::check('delete-user', $user))
+            return response()->json(['message' => "You are not authorized to change this user, only admins"], 403);
+
+        $user->delete();
+
+        return response()->json([
+            'message' => "User with ID of $id deleted successfully.",
+        ]);
+    }
 }
