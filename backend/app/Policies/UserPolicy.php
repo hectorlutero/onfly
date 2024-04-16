@@ -33,13 +33,21 @@ class UserPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can change the role the model.
      */
-    public function updateUser(User $user, User $targetUser): bool
+    public function updateUserRole(User $user, User $targetUser): bool
     {
         // check if the user is not an admin user
         if (auth()->user()->is_admin === 0)
             return false;
+        return $user->is_admin || $user->id === $targetUser->id;
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function updateUser(User $user, User $targetUser): bool
+    {
         return $user->is_admin || $user->id === $targetUser->id;
     }
 

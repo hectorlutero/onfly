@@ -22,7 +22,7 @@ class AuthController extends Controller
     public function index(Request $request)
     {
         if (!Gate::check('view-any-user', auth()->user()))
-            return response()->json(['message' => "You are not authorized to update this expense"], 403);
+            return response()->json(['message' => "You are not authorized to see this data"], 403);
 
 
         $users = User::all()->toArray();
@@ -92,10 +92,15 @@ class AuthController extends Controller
                 'message' => "User not found."
             ], 404);
 
+        if (!Gate::check('update-user', $user))
+            return response()->json(['message' => "You are not authorized to change this user, only admins"], 403);
+
         if (isset($request->is_admin)) {
-            if (!Gate::check('update-user', $user))
+            if (!Gate::check('update-user-role', $user))
                 return response()->json(['message' => "You are not authorized to change the user role, only admins"], 403);
         }
+
+
 
         $user->update($request->all());
 
