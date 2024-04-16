@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Expense;
 use App\Models\User;
 use App\Policies\ExpensePolicy;
+use App\Policies\UserPolicy;
 use App\Repositories\Contracts\ExpenseRepositoryInterface;
 use App\Repositories\ExpenseEloquentORM;
 use Illuminate\Auth\Access\Response;
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
 
     protected $policies = [
         Expense::class => ExpensePolicy::class,
+        User::class => UserPolicy::class,
     ];
     /**
      * Register any application services.
@@ -40,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::policy(Expense::class, ExpensePolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
     }
 }
