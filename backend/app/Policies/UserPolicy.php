@@ -29,6 +29,8 @@ class UserPolicy
      */
     public function createUser(User $user, User $targetUser): bool
     {
+        if (auth()->user()->is_admin === 0)
+            return false;
         return $user->is_admin || $user->id === $targetUser->id;
     }
 

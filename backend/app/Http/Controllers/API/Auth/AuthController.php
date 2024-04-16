@@ -82,6 +82,20 @@ class AuthController extends Controller
             'user' => $user,
         ], 201);
     }
+    public function insertUser(RegisterRequest $request)
+    {
+        if (!Gate::check('create-user', auth()->user()))
+            return response()->json(['message' => "You are not authorized to register this user, only admins"], 403);
+
+        $user = User::create($request->all());
+
+        Mail::to($user->email)->send(new UserRegistered($user));
+
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user,
+        ], 201);
+    }
 
     public function updateProfile(UpdateProfileRequest $request, int $id)
     {
