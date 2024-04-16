@@ -93,12 +93,14 @@ Use o nosso canal no slack: http://bit.ly/32CuOMy para tirar dúvidas sobre o pr
 - **Method:** `POST`
 - **Description:** Endpoint for user authentication.
 - **Request Body:**
+
   ```json
   {
     "email": "user@example.com",
     "password": "password"
   }
   ```
+
 - **Response:**
   - Status Code: `200 OK`
   - Body:
@@ -173,6 +175,45 @@ Use o nosso canal no slack: http://bit.ly/32CuOMy para tirar dúvidas sobre o pr
       "user": {
         // User object
       }
+    }
+    ```
+
+### Update Profile
+
+- **URL:** `/profile/{id}`
+- **Method:** `PUT`
+- **Description:** Endpoint to update user profile information.
+- **Authorization:** Bearer Token
+- **Request Body:**
+  ```json
+  {
+    // Updated fields
+  }
+  ```
+- **Response:**
+  - Status Code: `200 OK`
+  - Body:
+    ```json
+    {
+      "message": "User updated successfully.",
+      "user": {
+        // Updated user object
+      }
+    }
+    ```
+
+### Delete User
+
+- **URL:** `/delete-user/{id}`
+- **Method:** `DELETE`
+- **Description:** Endpoint to delete a user account.
+- **Authorization:** Bearer Token
+- **Response:**
+  - Status Code: `200 OK`
+  - Body:
+    ```json
+    {
+      "message": "User with ID of {id} deleted successfully."
     }
     ```
 
@@ -287,3 +328,7 @@ Use o nosso canal no slack: http://bit.ly/32CuOMy para tirar dúvidas sobre o pr
       "message": "Deleted expense with id {id}"
     }
     ```
+
+```
+
+```
