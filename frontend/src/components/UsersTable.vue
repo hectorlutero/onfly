@@ -129,15 +129,47 @@ export default {
           cancel: true,
           persistent: true,
         }).onOk(() => {
-          api.delete(`api/user/${id}`).then((response) => {
-            console.log(response);
-            $q.dialog({
-              title: 'User Deleted',
-              message: 'The user #' + id + ' was deleted.',
-              persistent: true,
-            }).onOk(() => window.location.reload());
-          });
+          deleteUser(id);
         });
+      }
+
+      async function deleteUser(id) {
+        try {
+          const response = await api.delete(`api/delete-user/${id}`);
+
+          if (response.status === 200) {
+            Notify.create({
+              message: response.data.message,
+              color: 'green',
+              textColor: 'white',
+              position: 'top',
+              timeout: 4000,
+            }).call(() => window.location.reload());
+          }
+        } catch (error) {
+          if (error.response?.status === 500) {
+            Notify.create({
+              message: 'Server error',
+              color: 'negative',
+              textColor: 'white',
+              position: 'top',
+              timeout: 2000,
+            });
+          }
+
+          if (error.response?.data) {
+            let errors = error.response.data.errors;
+            Object.entries(errors).map((error) => {
+              Notify.create({
+                message: error[1],
+                color: 'negative',
+                textColor: 'white',
+                position: 'top',
+                timeout: 4000,
+              });
+            });
+          }
+        }
       }
 
       function openInsertUserDialog() {
@@ -157,6 +189,7 @@ export default {
         openEditUserDialog,
         confirmDelete,
         confirmDeleteDialog,
+        deleteUser,
         content,
       };
     } catch (error) {

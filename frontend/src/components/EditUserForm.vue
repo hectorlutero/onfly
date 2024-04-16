@@ -19,7 +19,7 @@
       />
     </q-card-section>
     <q-card-actions class="flex justify-end">
-      <q-btn label="Update" color="indigo" @click="insertUser()" />
+      <q-btn label="Update" color="indigo" @click="editUser()" />
     </q-card-actions>
   </q-card>
 </template>
@@ -36,6 +36,8 @@ export default {
     const id = ref(props.user.id);
     const name = ref(props.user.name);
     const email = ref(props.user.email);
+    const password = ref(props.user.password);
+    const confirmPassword = ref(props.user.confirmPassword);
     const is_admin = ref(props.user.is_admin ? true : false);
     const formattedDate = date.formatDate(
       date.extractDate(props.user.created_at, 'DD/MM/YYYY'),
@@ -43,17 +45,18 @@ export default {
     );
     const userDate = ref(formattedDate);
 
-    async function insertUser() {
+    async function editUser() {
       try {
         const payload = {
           name: name.value,
           email: email.value,
-          is_admin: is_admin.value,
-          created_at: userDate.value,
+          password: password.value,
+          confirmPassword: confirmPassword.value,
+          is_admin: is_admin.value ? 1 : 0,
         };
 
         console.log(payload);
-        const response = await api.put(`/api/users/${id.value}`, {
+        const response = await api.put(`/api/profile/${id.value}`, {
           ...payload,
         });
 
@@ -77,7 +80,7 @@ export default {
             timeout: 2000,
           });
         }
-        console.log();
+
         if (error.response.data) {
           let errors = error.response.data.errors;
           Object.entries(errors).map((error) => {
@@ -97,9 +100,11 @@ export default {
       id,
       name,
       email,
+      password,
+      confirmPassword,
       is_admin,
       userDate,
-      insertUser,
+      editUser,
     };
   },
 };

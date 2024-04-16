@@ -39,7 +39,6 @@ export default {
     const is_admin = ref(0);
     const password = ref('');
     const confirmPassword = ref('');
-
     async function insertUser() {
       try {
         if (password.value !== confirmPassword.value)
@@ -49,6 +48,7 @@ export default {
             position: 'top',
             timeout: 2000,
           });
+
         if (password.value.length < 6)
           return Notify.create({
             message: 'Password is too short',
@@ -61,12 +61,15 @@ export default {
           name: name.value,
           email: email.value,
           is_admin: is_admin.value,
+          password: password.value,
+          confirmPassword: password.value,
         };
 
-        console.log(payload);
-        const response = await api.post('/api/user', { ...payload });
+        const response = await api.post('/api/insert-user', {
+          ...payload,
+        });
 
-        if (response.status === 200) {
+        if (response.status === 201) {
           Notify.create({
             message: 'User inserted successfully',
             color: 'green',
@@ -86,7 +89,6 @@ export default {
             timeout: 2000,
           });
         }
-        console.log();
         if (error.response.data) {
           let errors = error.response.data.errors;
           Object.entries(errors).map((error) => {

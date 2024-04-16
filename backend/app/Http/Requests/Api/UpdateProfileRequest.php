@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UpdateProfileRequest extends FormRequest
 {
@@ -21,11 +22,12 @@ class UpdateProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules =  [
             'name' => 'min:3|max:255',
-            'email' => 'unique:users|max:255|email',
+            'email' => "required|email|unique:users,email,{$this->profile},id",
             'is_admin' => 'integer',
             'password' => 'min:6|max:255'
         ];
+        return $rules;
     }
 }

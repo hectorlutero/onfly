@@ -99,6 +99,7 @@ class AuthController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request, int $id)
     {
+
         $user = User::find($id);
 
         if (!$user)
