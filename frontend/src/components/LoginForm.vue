@@ -63,6 +63,7 @@ export default {
           })
           .then((response) => {
             LocalStorage.set('token', response.data.token);
+            LocalStorage.set('user', response.data.user);
             // LocalStorage.set('user', response.data.user)
             Notify.create({
               message: 'Login successful',

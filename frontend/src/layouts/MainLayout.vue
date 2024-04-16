@@ -36,6 +36,12 @@
           icon="dashboard"
           link="/dashboard"
         />
+        <EssentialLink
+          v-if="user.is_admin"
+          title="Users"
+          icon="admin_panel_settings"
+          link="/users"
+        />
 
         <EssentialLink
           v-if="token"
@@ -61,6 +67,15 @@ defineOptions({
 });
 
 const token = localStorage.getItem('token');
+let user = {
+  is_admin: 0,
+};
+if (localStorage.getItem('user')) {
+  user = JSON.parse(
+    localStorage.getItem('user')?.replace('__q_objt|', '') as string
+  );
+}
+
 const leftDrawerOpen = ref(false);
 
 function toggleLeftDrawer() {
